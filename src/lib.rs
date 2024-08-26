@@ -25,15 +25,31 @@ pub mod local_version {
 }
 
 pub mod fetch {
-    use octocrab::models::repos::Release;
-    use octocrab::Result;
 
-    pub async fn release(owner: &str, repo: &str) -> Result<Release> {
-        let release = octocrab::instance()
-            .repos(owner, repo)
-            .releases()
-            .get_latest()
+    use reqwest::Error;
+    use serde::Deserialize;
+
+    #[derive(Debug, Deserialize)]
+    pub struct Release {
+        pub tag_name: String,
+        pub html_url: String,
+    }
+
+    pub async fn release(owner: &str, repo: &str) -> Result<Release, Error> {
+        let url = format!(
+            "https://api.github.com/repos/{}/{}/releases/latest",
+            owner, repo
+        );
+
+        let client = reqwest::Client::new();
+        let response = client
+            .get(&url)
+            .header("User-Agent", "whatversion")
+            .send()
             .await?;
+
+        let release: Release = response.json().await?;
+
         Ok(release)
     }
 }

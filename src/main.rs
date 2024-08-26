@@ -4,7 +4,7 @@
 use whatversion::{csv, fetch, local_version};
 
 #[tokio::main]
-async fn main() -> octocrab::Result<()> {
+async fn main() {
     const FILE: &str = "/.apps.csv";
 
     if let Ok(apps) = csv::read_lines(FILE).await {
@@ -22,6 +22,4 @@ async fn main() -> octocrab::Result<()> {
             }
         }
     }
-
-    Ok(())
 }
