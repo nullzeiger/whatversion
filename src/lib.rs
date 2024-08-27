@@ -53,3 +53,19 @@ pub mod fetch {
         Ok(release)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[tokio::test]
+    async fn test_local_version() {
+        let rustc = "rustc";
+        let result = local_version::command(rustc).await;
+        let expected = false;
+        match result {
+            Ok(output) => assert_eq!(expected, output.stdout.is_empty()),
+            Err(error) => panic!("Test error {}", error),
+        };
+    }
+}
