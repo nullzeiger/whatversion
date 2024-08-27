@@ -56,7 +56,19 @@ pub mod fetch {
 
 #[cfg(test)]
 mod tests {
+    use core::panic;
     use super::*;
+
+    #[tokio::test]
+    async fn test_read_file() {
+        let file = "/.bashrc";
+        let result = csv::read_lines(file).await;
+        let expected = true;
+        match result {
+            Ok(output) => assert_eq!(expected, output.count() > 0),
+            Err(error) => panic!("Test error {}", error),
+        }
+    }
 
     #[tokio::test]
     async fn test_local_version() {
