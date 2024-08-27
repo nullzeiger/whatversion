@@ -68,4 +68,16 @@ mod tests {
             Err(error) => panic!("Test error {}", error),
         };
     }
+
+    #[tokio::test]
+    async fn test_gh_version() {
+        let owner = "rust-lang";
+        let repo = "rust";
+        let result = fetch::release(owner, repo).await;
+        let expected = false;
+        match result {
+            Ok(release) => assert_eq!(expected, release.tag_name.is_empty()),
+            Err(error) => panic!("Test error {}", error),
+        }
+    }
 }
