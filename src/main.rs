@@ -13,7 +13,8 @@ async fn main() {
             if let Ok(output) = local_version::command(app_values[0]).await {
                 if let Ok(release) = fetch::release(app_values[1], app_values[2]).await {
                     println!(
-                        "Local version of {}last version in GitHub repo is {}\nurl {}\n",
+                        "Local version of {} is {}last version in GitHub repo is {}\nurl {}\n",
+                        app_values[0],
                         String::from_utf8_lossy(&output.stdout),
                         release.tag_name,
                         release.html_url
