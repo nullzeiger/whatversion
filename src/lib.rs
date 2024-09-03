@@ -43,7 +43,7 @@ pub mod fetch {
 
         let client = reqwest::Client::new();
         let response = client
-            .get(&url)
+            .get(url)
             .header("User-Agent", "whatversion")
             .send()
             .await?;
@@ -56,8 +56,8 @@ pub mod fetch {
 
 #[cfg(test)]
 mod tests {
-    use core::panic;
     use super::*;
+    use core::panic;
 
     #[tokio::test]
     async fn test_read_file() {
@@ -71,7 +71,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn test_local_version() {
+    async fn local_version() {
         let rustc = "rustc";
         let result = local_version::command(rustc).await;
         let expected = false;
@@ -82,7 +82,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn test_gh_version() {
+    async fn gh_version() {
         let owner = "rust-lang";
         let repo = "rust";
         let result = fetch::release(owner, repo).await;
